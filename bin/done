@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+
+%w(rubygems commander/import done).each{|requirement| require requirement}
+
+program :name,           'Done'
+program :description,    'a tool for better communication'
+program :version,        'fill me in' #TODO get version number programatically
+program :help_formatter, Commander::HelpFormatter::TerminalCompact
+
+SUB_COMMANDS = %w(add_project day_stats daily_update)
+
+#TODO: make no subcommand default to -h
+
+
+command :add_project do |cmd|
+  cmd.syntax = "done add_project"
+  cmd.summary = "Adds the current project to the config file"
+  cmd.description = "#{cmd.summary}"
+  cmd.when_called do |args, options|
+   # 
+  end
+end
+
+command :stats do |cmd|
+  cmd.syntax = "done stats"
+  cmd.summary = "get some stats for the tickets you've completed"
+  cmd.description = "#{cmd.summary}"
+  cmd.when_called do |args, options|
+   # 
+  end
+end
+
+command :template do |cmd|
+  cmd.syntax = "done template"
+  cmd.summary = "print out an email template with"
+  cmd.description = "#{cmd.summary}"
+  cmd.when_called do |args, options|
+   # 
+  end
+end
+
+
