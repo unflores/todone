@@ -7,18 +7,14 @@ program :name,           'Done'
 program :description,    'a tool for better communication'
 program :version,        'fill me in' #TODO get version number programatically
 program :help_formatter, Commander::HelpFormatter::TerminalCompact
-
-SUB_COMMANDS = %w(add_project day_stats daily_update)
-
-#TODO: make no subcommand default to -h
-
+default_command :help
 
 command :add_project do |cmd|
   cmd.syntax = "done add_project"
   cmd.summary = "Adds the current project to the config file"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
-   # 
+    ask("Project id: "){|q| q.echo = true} 
   end
 end
 
