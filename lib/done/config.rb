@@ -14,6 +14,18 @@
 module Done
 	class Config
 
+		class << self
+      # @see Done::Consts:CONFIG_FILE
+      # @param [String] dir The directory to look in for the file specified by {Done::Consts::CONFIG_FILE}
+      # @return [Done::Config] The populated {Config} instance
+      def load_config dir
+        require 'yaml'
+        data = YAML.load(File.open(File.join(dir, Done::Consts::CONFIG_FILE)).read)
+        Done::Config.new data
+      end
+  	end
+
+
 		def initialize(data={})
 			@data = {}
 			update!(data)
@@ -36,6 +48,7 @@ module Done
 				@data[key.to_sym] = value
 			end
 		end
+		def to_hash; @data end
 
 		def method_missing(sym, *args)
 			if sym.to_s =~ /(.+)=$/
@@ -44,6 +57,5 @@ module Done
 				self[sym]
 			end
 		end
-
 	end
 end
