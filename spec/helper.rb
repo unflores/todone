@@ -10,5 +10,37 @@ end
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+
 require 'done'
+require 'yaml'
+module FileSystemHelp
+	TMP_DIR = '/tmp'
+  CONFIG_DIR = File.join(TMP_DIR, 'config')
+  ABS_CONFIG_FILE = File.join(CONFIG_DIR, Done::Consts::CONFIG_FILE)
+	
+	def clean_test_config!
+    %x(rm -rf #{CONFIG_DIR}) if File.exists? CONFIG_DIR
+  end
+	
+	def dummy_config
+		{:owner => 'name',:api_key => 'alkjlkjlkjfd512452354'}
+	end	
+	
+	def ensure_fresh_config!
+	  clean_test_config!
+	  %x(mkdir #{CONFIG_DIR}) unless File.exists? CONFIG_DIR	
+		File.open(ABS_CONFIG_FILE, 'w') {|f| f.write(dummy_config.to_yaml) }	
+		
+	end
+end
+include FileSystemHelp
+
+class Class
+  def publicize_methods
+    saved_private_instance_methods = self.private_instance_methods
+    self.class_eval { public *saved_private_instance_methods }
+    yield
+    self.class_eval { private *saved_private_instance_methods }
+  end
+end
 
