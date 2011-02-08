@@ -5,10 +5,10 @@ module Done
   # @author A Flores
   module Consts
     ## Name of the general (defaults) config file
-    CONF_FILE = 'config.yml'
+    CONFIG_FILE = 'config.yml'
     ## Default configuaration storage directory
-    CONF_DIR = File.join(ENV['HOME'], '.done')
+    CONFIG_DIR = File.join(ENV['HOME'], '.done')
     ## Default general (defaults) config file location
-    CONF = File.join(CONF_DIR, CONF_FILE)
+    CONFIG = File.join(CONFIG_DIR, CONFIG_FILE)
   end
 end
