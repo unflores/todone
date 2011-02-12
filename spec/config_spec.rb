@@ -14,12 +14,12 @@ describe Config do
 		end
   end
 	context "when instantiated" do
-    before(:all) do 
+    before(:each) do 
       @config = Done::Config.new
       @hash = { :foo => "bar", :baz => "widget" }
     end
 		
-		describe "#update!" 
+		describe "#update!" do 
 			it "should properly update and return its data variable" do
 				@config.update! @hash
 				@config.to_hash.should == @hash
@@ -47,3 +47,4 @@ describe Config do
 			end
 		end
 	end
+end
