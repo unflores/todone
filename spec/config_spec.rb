@@ -45,12 +45,30 @@ describe Config do
 				"bar".should == @config.foo
 			end
 		end
+	
 		describe "#save" do
-			it "should write out a yaml version of the @data attribute"
+			it "should write out a yaml version of the @data attribute" do
+				FSHelp::ensure_fresh_config!
+				hash = { :user => :dr_rumack, :nickname => 'Shirley' }
+				config = Done::Config.new hash
+				config.save FSHelp::CONFIG_DIR
+				YAML.load(File.open(FSHelp::ABS_CONFIG_FILE).read).to_hash.should == config.to_hash
+			end
 		end
 
 		describe "#to_hash" do
-			it "should return a recursively hashified version of the @data attribute"
+			it "should return a recursively hashified version of the @data attribute" do
+				#this hash should cover my bases as far as being deep
+				hash = {	
+					:frank_drebbin => {
+						:guns => ['gun1','gun2','crome_dome'],
+						:friends=> {
+							:nordberg => { :football_skills => 'teh_best' } 
+						} 
+					} 
+				}
+				Done::Config.new(hash).to_hash.should == hash
+			end
 		end
 	end
 end
