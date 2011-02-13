@@ -24,7 +24,12 @@ module Done
         Done::Config.new data
       end
   	end
-
+		
+		def save dir
+			File.open(File.join(dir, Done::Consts::CONFIG_FILE), 'w') do |f| 
+				f.write( @data.to_hash.to_yaml )
+			end
+		end
 
 		def initialize(data={})
 			@data = {}
@@ -48,7 +53,14 @@ module Done
 				@data[key.to_sym] = value
 			end
 		end
-		def to_hash; @data end
+
+		def to_hash
+			hash = {}
+			@data.each do |key,value|
+				hash[key] = value.class == Config ? value.to_hash : value
+			end
+			hash
+		end
 
 		def method_missing(sym, *args)
 			if sym.to_s =~ /(.+)=$/
