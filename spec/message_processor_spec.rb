@@ -3,10 +3,10 @@ require 'helper'
 describe Done::MessageProcessor do
 	before(:each) { FSHelp::clean_test_config! }
 	describe "self#needs_init?" do
-		it " should return true there is no config.yml" do
+		it "should return true there is no config.yml" do
 			Done::MessageProcessor.needs_init?(FSHelp::CONFIG_DIR).should == true
 		end
-		it " should return false when there is a config.yml" do
+		it "should return false when there is a config.yml" do
 			ensure_fresh_config!
 			Done::MessageProcessor.needs_init?(FSHelp::CONFIG_DIR).should == false
 		end
@@ -25,22 +25,26 @@ describe Done::MessageProcessor do
 		before(:each) do
 			FSHelp::ensure_fresh_config! 
 			@mp = Done::MessageProcessor.new(FSHelp::CONFIG_DIR)
+			@project = { :users => 'frank_drebbin', :id => '555555' }
+			FSHelp::ensure_no_pre_commit_hook!
 		end
 		
-		it " should add a project to config if it is not present" do
-			project = { :users => 'frank_drebbin', :id => '555555' }
-			@mp.add_project(project).should == true
+		it "should add a project to config if it is not present" do
+			@mp.add_project(@project).should == true
 			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
 			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
 		end
 		
-		it " should edit a project in config if project is present" do
-			project = {:user => 'frank_drebbin', :project => 555555 }
-			@mp.add_project project
+		it "should edit a project in config if project is present" do
+			@mp.add_project @project
 			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
-			config.should == FSHelp::dummy_config
+			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
+			@mp.add_project @project
+			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
+			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
 		end
 		
-		it " should add a hook to .git/hooks/pre-commit if not present"
+		it "should add a hook to .git/hooks/pre-commit if not present" do
+		end
 	end
 end
