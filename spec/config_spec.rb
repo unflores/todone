@@ -1,19 +1,18 @@
 require 'helper'
 require 'yaml'
 
-
 describe Config do
 	context "class" do
 		describe "self#load_config" do
-			before(:each) { FileSystemHelp::ensure_fresh_config! }
+			before(:each) { FSHelp::ensure_fresh_config! }
 			after(:each)  { clean_test_config! }
 			
 			it "should properly load the config file" do
-				 Done::Config.load_config(FileSystemHelp::CONFIG_DIR).to_hash.should == YAML.load(File.open(FileSystemHelp::ABS_CONFIG_FILE).read)
+				 Done::Config.load_config(FSHelp::CONFIG_DIR).to_hash.should == YAML.load(File.open(FSHelp::ABS_CONFIG_FILE).read)
 			end
 		end
   end
-	context "when instantiated" do
+	context "instance" do
     before(:each) do 
       @config = Done::Config.new
       @hash = { :foo => "bar", :baz => "widget" }
@@ -45,6 +44,13 @@ describe Config do
 				@config.foo = "bar"
 				"bar".should == @config.foo
 			end
+		end
+		describe "#save" do
+			it "should write out a yaml version of the @data attribute"
+		end
+
+		describe "#to_hash" do
+			it "should return a recursively hashified version of the @data attribute"
 		end
 	end
 end
