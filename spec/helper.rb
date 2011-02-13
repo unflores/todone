@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'bundler'
+require 'yaml'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -8,14 +10,13 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'done'
-require 'yaml'
-module FileSystemHelp
+module FSHelp
 	TMP_DIR = '/tmp'
-  CONFIG_DIR = File.join(TMP_DIR, 'config')
+  CONFIG_DIR = File.join(TMP_DIR, '.done_config')
   ABS_CONFIG_FILE = File.join(CONFIG_DIR, Done::Consts::CONFIG_FILE)
 	
 	def clean_test_config!
@@ -30,10 +31,9 @@ module FileSystemHelp
 	  clean_test_config!
 	  %x(mkdir #{CONFIG_DIR}) unless File.exists? CONFIG_DIR	
 		File.open(ABS_CONFIG_FILE, 'w') {|f| f.write(dummy_config.to_yaml) }	
-		
 	end
 end
-include FileSystemHelp
+include FSHelp
 
 class Class
   def publicize_methods
