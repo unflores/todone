@@ -15,6 +15,7 @@ module Done
 			end
 
 			def init options
+				return if options[:owner].nil? or options[:api_key].nil?
 				dir = options.delete(:dir) || Done::Consts::CONFIG_DIR
 				conf_file = File.join(dir, Done::Consts::CONFIG_FILE)
 				
@@ -37,9 +38,14 @@ module Done
 		end
 
 		def add_project project
-			return if project.nil? or project[:id].nil? or project[:users].nil?
+			return "Error: Missing project id or users." if project.nil? or project[:id].nil? or project[:users].nil?
 			config[project[:id]] = project[:users].split(',')
 			config.save config_dir
+			return "Couldn't find the .git dir.\n" +
+				"Go to your project directory and type the following:\n" +
+				"echo 'done open_tickets #{project[:id]} -m' > .git/hooks/pre-commit\n" +
+				"chmod 751 .git/hooks/pre-commit\n"	unless File.exists? File.join('.git','hooks')
+			
 			true
 		end
 

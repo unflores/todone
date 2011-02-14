@@ -6,6 +6,7 @@ describe Done::MessageProcessor do
 		it "should return true there is no config.yml" do
 			Done::MessageProcessor.needs_init?(FSHelp::CONFIG_DIR).should == true
 		end
+	
 		it "should return false when there is a config.yml" do
 			ensure_fresh_config!
 			Done::MessageProcessor.needs_init?(FSHelp::CONFIG_DIR).should == false
@@ -18,6 +19,11 @@ describe Done::MessageProcessor do
 			Done::MessageProcessor.init options
 			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
 			config.should == FSHelp::dummy_config
+		end
+		
+		it "should return nil if :api_key or :owner arent passed in" do
+			options = { :dir => FSHelp::CONFIG_DIR }
+			Done::MessageProcessor.init(options).should == nil
 		end
 	end
 	

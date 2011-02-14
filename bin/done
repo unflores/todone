@@ -14,7 +14,18 @@ command :add_project do |cmd|
   cmd.summary = "Adds the current project to the config file"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
-    ask("Project id: "){|q| q.echo = true} 
+
+		if Done::MessageProcessor.needs_init?
+			setup = {}
+			setup[:api_key] = ask("API Key: ") {|q| q.echo = true} 
+			setup[:owner]		= ask("Username: "){|q| q.echo = true} 
+			Done::MessageProcessor.init setup
+		end
+		options = {}
+		options[:id]    = ask("Project id: ") {|q| q.echo = true}
+		options[:users] = ask("Other users: "){|q| q.echo = true} 
+		mp = Done::MessageProcessor.new()
+		puts mp.add_project(options)
   end
 end
 
