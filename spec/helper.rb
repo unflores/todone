@@ -32,6 +32,10 @@ module FSHelp
 	  %x(mkdir #{CONFIG_DIR}) unless File.exists? CONFIG_DIR	
 		File.open(ABS_CONFIG_FILE, 'w') {|f| f.write(dummy_config.to_yaml) }	
 	end
+
+	def ensure_no_pre_commit_hook!
+		%x(ls)
+	end
 end
 include FSHelp
 

@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'done')
 
-%w(config consts yaml fileutils).each{|requirement| require requirement}
+%w(httparty cgi pivotal_puller config consts yaml fileutils).each{|requirement| require requirement}
 
 module Done
 	class MessageProcessor
@@ -31,8 +31,9 @@ module Done
 			end
 		end
  
-		def initialize config_dir = nil
+		def initialize config_dir = nil, project_id = nil
 			self.config_dir = config_dir
+			@pp = Done::PivotalPuller.new(project_id) if project_id
 		end
 
 		def add_project project
@@ -49,6 +50,10 @@ module Done
 		def config_dir
 			(@config_dir.nil? && Done::Consts::CONFIG_DIR) || @config_dir
 		end
-
+		
+		def open_tickets
+			return "Error: No project id" if @pp.nil?
+			@pp.get_stories("started")
+		end
 	end
 end
