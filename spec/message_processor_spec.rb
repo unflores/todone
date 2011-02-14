@@ -35,12 +35,6 @@ describe Done::MessageProcessor do
 			FSHelp::ensure_no_pre_commit_hook!
 		end
 		
-		it "should add a project to config if it is not present" do
-			@mp.add_project(@project).should == true
-			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
-			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
-		end
-		
 		it "should edit a project in config if project is present" do
 			@mp.add_project @project
 			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
@@ -50,7 +44,8 @@ describe Done::MessageProcessor do
 			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
 		end
 		
-		it "should add a hook to .git/hooks/pre-commit if not present" do
-		end
+		it "should add a hook to .git/hooks/pre-commit if not present"
+		it "should not add a hook if .git/hooks/pre-commit is not present"
+		it "should not add a hook if .git/hooks/pre-commit cannot be found"
 	end
 end
