@@ -10,5 +10,7 @@ module Done
     CONFIG_DIR = File.join(ENV['HOME'], '.done')
     ## Default general (defaults) config file location
     CONFIG = File.join(CONFIG_DIR, CONFIG_FILE)
-  end
+		## where the hook file is
+		HOOK_FILE = File.join('.git','hooks','pre-commit')
+	end
 end
