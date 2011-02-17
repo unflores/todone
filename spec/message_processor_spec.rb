@@ -44,8 +44,22 @@ describe Done::MessageProcessor do
 			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
 		end
 		
-		it "should add a hook to .git/hooks/pre-commit if not present"
-		it "should not add a hook if .git/hooks/pre-commit is not present"
-		it "should not add a hook if .git/hooks/pre-commit cannot be found"
+		it "should add a hook to .git/hooks/pre-commit if not present" do
+			@mp.add_project @project
+			contents = File.open('.git/hooks/pre-commit', 'r') { |f| f.read }
+			contents[@project[:id]].should == '555555'
+		end
+		#kind of a shitty test, really I should refactor the message processor to make its return statement more meaningful
+		it "should not add a hook if .git/hooks/pre-commit is present" do
+			@mp.add_project @project
+			return_statement = @mp.add_project @project
+			return_statement['already using your pre-commit hook'].empty?.should == false
+		end
+		
+		it "should not add a hook if .git/hooks/ cannot be found" do
+			File.expects(:exists?).returns(false)
+			return_statement = @mp.add_project @project
+			return_statement["Couldn't find the .git dir."].empty?.should == false
+		end
 	end
 end

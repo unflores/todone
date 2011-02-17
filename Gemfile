@@ -8,6 +8,7 @@ source "http://rubygems.org"
 group :development do
 	gem "commander","4.0.3"
 	gem "rspec"
+	gem "mocha","0.9.12"
 	gem "crack", "0.1.8"
 	gem "httparty", "0.7.4"
   gem "bundler", "~> 1.0.0"
