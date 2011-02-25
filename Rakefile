@@ -15,13 +15,12 @@ Jeweler::Tasks.new do |gem|
   gem.name = "done"
   gem.homepage = "http://github.com/unflores/done"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Done is a command-line tool that gives you the ability to better integrate git with your pivotal project.}
+  gem.description = %Q{Done is a command-line tool that gives you the ability to better integrate git with your project manager(which is currently only allowed to be pivotal tracker). Done will keep track of the tickets your working on so you don't have to.}
   gem.email = "ctrl4ltdeleteme@gmail.com"
   gem.authors = ["A Flores"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
@@ -29,14 +28,14 @@ Jeweler::RubygemsDotOrgTasks.new
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.pattern = 'spec/*_spec.rb'
   test.verbose = true
 end
 
 require 'rcov/rcovtask'
 Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.libs << 'spec'
+  test.pattern = 'spec/*_spec.rb'
   test.verbose = true
 end
 
