@@ -3,11 +3,14 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
 %w(rubygems commander/import done).each{|requirement| require requirement}
 
+version_file = File.join(File.dirname(__FILE__), '..', 'VERSION')
+
 program :name,           'Done'
 program :description,    'a tool for better communication'
-program :version,        'fill me in' #TODO get version number programatically
+program :version,        File.read(version_file)
 program :help_formatter, Commander::HelpFormatter::TerminalCompact
 default_command :help
+
 
 command :add_project do |cmd|
   cmd.syntax = "done add_project"

@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'done')
 
-%w(httparty cgi pivotal_puller config consts yaml fileutils).each{|requirement| require requirement}
+%w(cgi pivotal_puller config consts yaml fileutils).each{|requirement| require requirement}
 
 module Done
 	class MessageProcessor

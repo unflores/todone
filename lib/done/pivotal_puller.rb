@@ -1,3 +1,4 @@
+require 'httparty' 
 module Done
 	class PivotalPuller
 		include HTTParty
