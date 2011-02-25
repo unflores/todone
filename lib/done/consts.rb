@@ -1,4 +1,4 @@
-module Done
+module Todone
   ##
   # Simple container module for constants.
   #
@@ -7,7 +7,7 @@ module Done
     ## Name of the general (defaults) config file
     CONFIG_FILE = 'config.yml'
     ## Default configuaration storage directory
-    CONFIG_DIR = File.join(ENV['HOME'], '.done')
+    CONFIG_DIR = File.join(ENV['HOME'], '.todone')
     ## Default general (defaults) config file location
     CONFIG = File.join(CONFIG_DIR, CONFIG_FILE)
 		## where the hook file is

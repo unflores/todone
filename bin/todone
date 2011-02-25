@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
-%w(rubygems commander/import done).each{|requirement| require requirement}
+%w(rubygems commander/import todone).each{|requirement| require requirement}
 
 version_file = File.join(File.dirname(__FILE__), '..', 'VERSION')
 
-program :name,           'Done'
+program :name,           'Todone'
 program :description,    'a tool for better communication'
 program :version,        File.read(version_file)
 program :help_formatter, Commander::HelpFormatter::TerminalCompact
@@ -13,27 +13,27 @@ default_command :help
 
 
 command :add_project do |cmd|
-  cmd.syntax = "done add_project"
+  cmd.syntax = "todone add_project"
   cmd.summary = "Adds the current project to the config file"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
 
-		if Done::MessageProcessor.needs_init?
+		if Todone::MessageProcessor.needs_init?
 			setup = {}
 			setup[:api_key] = ask("API Key: ") {|q| q.echo = true} 
 			setup[:owner]		= ask("Username: "){|q| q.echo = true} 
-			Done::MessageProcessor.init setup
+			Todone::MessageProcessor.init setup
 		end
 		options = {}
 		options[:id]    = ask("Project id: ") {|q| q.echo = true}
 		options[:users] = ask("Other users: "){|q| q.echo = true} 
-		mp = Done::MessageProcessor.new()
+		mp = Todone::MessageProcessor.new()
 		puts mp.add_project(options)
   end
 end
 
 command :stats do |cmd|
-  cmd.syntax = "done stats"
+  cmd.syntax = "todone stats"
   cmd.summary = "get some stats for the tickets you've completed"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
@@ -42,7 +42,7 @@ command :stats do |cmd|
 end
 
 command :template do |cmd|
-  cmd.syntax = "done template"
+  cmd.syntax = "todone template"
   cmd.summary = "print out an email template with"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|

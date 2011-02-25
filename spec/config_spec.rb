@@ -8,13 +8,13 @@ describe Config do
 			after(:each)  { clean_test_config! }
 			
 			it "should properly load the config file" do
-				 Done::Config.load_config(FSHelp::CONFIG_DIR).to_hash.should == YAML.load(File.open(FSHelp::ABS_CONFIG_FILE).read)
+				 Todone::Config.load_config(FSHelp::CONFIG_DIR).to_hash.should == YAML.load(File.open(FSHelp::ABS_CONFIG_FILE).read)
 			end
 		end
   end
 	context "instance" do
     before(:each) do 
-      @config = Done::Config.new
+      @config = Todone::Config.new
       @hash = { :foo => "bar", :baz => "widget" }
     end
 		
@@ -27,7 +27,7 @@ describe Config do
 
 		describe "self#new" do
 			it "should properly instantiate with data" do
-				config = Done::Config.new @hash
+				config = Todone::Config.new @hash
 				@hash.should ==  config.to_hash
 			end
 		end
@@ -50,7 +50,7 @@ describe Config do
 			it "should write out a yaml version of the @data attribute" do
 				FSHelp::ensure_fresh_config!
 				hash = { :user => :dr_rumack, :nickname => 'Shirley' }
-				config = Done::Config.new hash
+				config = Todone::Config.new hash
 				config.save FSHelp::CONFIG_DIR
 				YAML.load(File.open(FSHelp::ABS_CONFIG_FILE).read).to_hash.should == config.to_hash
 			end
@@ -67,7 +67,7 @@ describe Config do
 						} 
 					} 
 				}
-				Done::Config.new(hash).to_hash.should == hash
+				Todone::Config.new(hash).to_hash.should == hash
 			end
 		end
 	end

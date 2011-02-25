@@ -1,5 +1,5 @@
 require 'httparty' 
-module Done
+module Todone
 	class PivotalPuller
 		include HTTParty
 		base_uri 'www.pivotaltracker.com'

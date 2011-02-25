@@ -13,11 +13,11 @@ end
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'done'
+require 'todone'
 module FSHelp
 	TMP_DIR = '/tmp'
-  CONFIG_DIR = File.join(TMP_DIR, '.done_config')
-  ABS_CONFIG_FILE = File.join(CONFIG_DIR, Done::Consts::CONFIG_FILE)
+  CONFIG_DIR = File.join(TMP_DIR, '.todone_config')
+  ABS_CONFIG_FILE = File.join(CONFIG_DIR, Todone::Consts::CONFIG_FILE)
 	
 	def clean_test_config!
     %x(rm -rf #{CONFIG_DIR}) if File.exists? CONFIG_DIR

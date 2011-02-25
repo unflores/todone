@@ -12,11 +12,11 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "done"
-  gem.homepage = "http://github.com/unflores/done"
+  gem.name = "todone"
+  gem.homepage = "http://github.com/unflores/todone"
   gem.license = "MIT"
-  gem.summary = %Q{Done is a command-line tool that gives you the ability to better integrate git with your pivotal project.}
-  gem.description = %Q{Done is a command-line tool that gives you the ability to better integrate git with your project manager(which is currently only allowed to be pivotal tracker). Done will keep track of the tickets your working on so you don't have to.}
+  gem.summary = %Q{Todone is a command-line tool that gives you the ability to better integrate git with your pivotal project.}
+  gem.description = %Q{Toone is a command-line tool that gives you the ability to better integrate git with your project manager(which is currently only allowed to be pivotal tracker). Todone will keep track of the tickets your working on so you don't have to.}
   gem.email = "ctrl4ltdeleteme@gmail.com"
   gem.authors = ["A Flores"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
@@ -46,7 +46,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "done #{version}"
+  rdoc.title = "todone #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
