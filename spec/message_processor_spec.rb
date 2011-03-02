@@ -30,7 +30,7 @@ describe Todone::MessageProcessor do
 	describe "#add_project" do
 		before(:each) do
 			FSHelp::ensure_fresh_config! 
-			@mp = Todone::MessageProcessor.new(FSHelp::CONFIG_DIR)
+			@mp = Todone::MessageProcessor.new(:config_dir => FSHelp::CONFIG_DIR)
 			@project = { :users => 'frank_drebbin', :id => '555555' }
 			FSHelp::ensure_no_pre_commit_hook!
 		end
@@ -45,6 +45,7 @@ describe Todone::MessageProcessor do
 		end
 		
 		it "should add a hook to .git/hooks/pre-commit if not present" do
+			File.expects(:exists?).returns(false)
 			@mp.add_project @project
 			contents = File.open('.git/hooks/pre-commit', 'r') { |f| f.read }
 			contents[@project[:id]].should == '555555'

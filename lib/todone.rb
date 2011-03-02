@@ -32,9 +32,9 @@ module Todone
 			end
 		end
  
-		def initialize config_dir = nil, project_id = nil
-			self.config_dir = config_dir
-			@pp = Todone::PivotalPuller.new(project_id) if project_id
+		def initialize opts = {}
+			self.config_dir = opts[:config_dir]
+			@pp = Todone::PivotalPuller.new(opts[:project_id]) if opts[:project_id]
 		end
 
 		def add_project project

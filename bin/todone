@@ -13,7 +13,7 @@ default_command :help
 
 
 command :add_project do |cmd|
-  cmd.syntax = "todone add_project"
+  cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "Adds the current project to the config file"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
@@ -33,7 +33,7 @@ command :add_project do |cmd|
 end
 
 command :stats do |cmd|
-  cmd.syntax = "todone stats"
+  cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "get some stats for the tickets you've completed"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
@@ -42,7 +42,7 @@ command :stats do |cmd|
 end
 
 command :template do |cmd|
-  cmd.syntax = "todone template"
+  cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "print out an email template with"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
@@ -50,4 +50,14 @@ command :template do |cmd|
   end
 end
 
+command :open_tickets do |cmd|
+  cmd.syntax = "todone #{cmd.name}"
+  cmd.summary = "print out a list of open tickets"
+  cmd.description = "#{cmd.summary}"
+  cmd.when_called do |args, options|
+		mp = Todone::MessageProcessor.new(:project_id => 232039)
+		puts mp.open_tickets 
+  end
 
+
+end
