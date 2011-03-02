@@ -10,6 +10,10 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+RSpec.configure do |config|
+	config.mock_with :mocha
+end
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
@@ -29,7 +33,8 @@ module FSHelp
 	
 	def ensure_fresh_config!
 	  clean_test_config!
-	  %x(mkdir #{CONFIG_DIR}) unless File.exists? CONFIG_DIR	
+	  %x(mkdir -p #{CONFIG_DIR}) unless File.exists? CONFIG_DIR	
+		
 		File.open(ABS_CONFIG_FILE, 'w') {|f| f.write(dummy_config.to_yaml) }	
 	end
 
