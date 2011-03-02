@@ -58,6 +58,4 @@ command :open_tickets do |cmd|
 		mp = Todone::MessageProcessor.new(:project_id => 232039)
 		puts mp.open_tickets 
   end
-
-
 end

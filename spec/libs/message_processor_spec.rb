@@ -26,7 +26,7 @@ describe Todone::MessageProcessor do
 			Todone::MessageProcessor.init(options).should == nil
 		end
 	end
-	
+	#TODO remove file work and replace with some stubs	
 	describe "#add_project" do
 		before(:each) do
 			FSHelp::ensure_fresh_config! 

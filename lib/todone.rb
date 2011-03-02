@@ -74,7 +74,7 @@ module Todone
 		
 		def open_tickets
 			return "Error: No project id" if @pp.nil?
-			@pp.get_stories("started")
+			@pp.pull_stories("started")
 		end
 	end
 end
