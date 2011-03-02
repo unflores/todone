@@ -25,17 +25,16 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'spec/*_spec.rb'
-  test.verbose = true
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new do |t|
+	t.rspec_opts = ["--color", "--format documentation", "--fail-fast"]
+	t.pattern = ['spec/libs/*.rb']
 end
 
 require 'rcov/rcovtask'
 Rcov::RcovTask.new do |test|
   test.libs << 'spec'
-  test.pattern = 'spec/*_spec.rb'
+  test.pattern = 'spec/libs/*_spec.rb'
   test.verbose = true
 end
 
