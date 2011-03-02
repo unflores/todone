@@ -32,7 +32,6 @@ describe Todone::MessageProcessor do
 			FSHelp::ensure_fresh_config! 
 			@mp = Todone::MessageProcessor.new(:config_dir => FSHelp::CONFIG_DIR)
 			@project = { :users => 'frank_drebbin', :id => '555555' }
-			FSHelp::ensure_no_pre_commit_hook!
 		end
 		
 		it "should edit a project in config if project is present" do
@@ -45,15 +44,13 @@ describe Todone::MessageProcessor do
 		end
 		
 		it "should add a hook to .git/hooks/pre-commit if not present" do
-			File.stubs(:exists?).returns(false)
-			@mp.add_project @project
-			contents = File.open('.git/hooks/pre-commit', 'r') { |f| f.read }
-			contents[@project[:id]].should == '555555'
+			File.stubs(:exists?).with(File.join('.git','hooks')).returns(true)
+			@mp.stubs(:add_hook).returns("called")
+			@mp.add_project(@project).should == "called"
 		end
 		
-		#kind of a shitty test, really I should refactor the message processor to make its return statement more meaningful
+		#TODO remove text from return statement
 		it "should not add a hook if .git/hooks/pre-commit is present" do
-			@mp.add_project @project
 			File.stubs(:exists?).returns(true)
 			return_statement = @mp.add_project @project
 			return_statement['already using your pre-commit hook'].empty?.should == false
