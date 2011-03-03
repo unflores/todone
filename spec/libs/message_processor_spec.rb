@@ -35,6 +35,7 @@ describe Todone::MessageProcessor do
 		end
 		
 		it "should edit a project in config if project is present" do
+			@mp.stubs(:add_hook).returns("called")
 			@mp.add_project @project
 			config = File.open( FSHelp::ABS_CONFIG_FILE ) { |yf| YAML::load( yf ) }
 			config.should == FSHelp::dummy_config.merge({:'555555'=> ["frank_drebbin"]})
