@@ -87,11 +87,13 @@ describe Todone::MessageProcessor do
 	end
 
 	describe "dynamic print methods" do
+
 		it "should exist if a method exists" do
 			Todone::MessageProcessor.method_defined?('open_tickets').should == true
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 			@mp.print_open_tickets.should == nil 
 		end
+
 		it "should raise a method_missing error if the method does not exist" do
 		
 			Todone::MessageProcessor.method_defined?('get_me_a_coke').should_not == true
