@@ -26,6 +26,7 @@ describe Todone::MessageProcessor do
 			Todone::MessageProcessor.init(options).should == nil
 		end
 	end
+
 	#TODO remove file work and replace with some stubs	
 	describe "#add_project" do
 		before(:each) do
@@ -53,14 +54,12 @@ describe Todone::MessageProcessor do
 		#TODO remove text from return statement
 		it "should not add a hook if .git/hooks/pre-commit is present" do
 			File.stubs(:exists?).returns(true)
-			return_statement = @mp.add_project @project
-			return_statement['already using your pre-commit hook'].empty?.should == false
+			@mp.add_project(@project).should == "exists_pre_commit_hook"	
 		end
 		
 		it "should not add a hook if .git/hooks/ cannot be found" do
 			File.stubs(:exists?).returns(false)
-			return_statement = @mp.add_project @project
-			return_statement["Couldn't find the .git dir."].empty?.should == false
+			@mp.add_project(@project).should == 'missing_hooks_dir'
 		end
 	end
 end

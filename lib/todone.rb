@@ -38,29 +38,24 @@ module Todone
 		end
 
 		def add_project project
-			return "Error: Missing project id or users." if project.nil? or project[:id].nil? or project[:users].nil?
+			return 'missing_project' if project.nil? or project[:id].nil? or project[:users].nil?
 
 			config[project[:id]] = project[:users].split(',')
 			config.save config_dir
-			return "Couldn't find the .git dir.\n" +
-				"Go to your project directory and type the following:\n" +
-				"echo 'todone open_tickets #{project[:id]} -m' > .git/hooks/pre-commit\n" +
-				"chmod 751 #{Todone::Consts::HOOK_FILE}\n"	unless File.exists? File.join('.git','hooks')
+			return 'missing_hooks_dir' unless File.exists? File.join('.git','hooks')
 		
 			return self.add_hook project[:id]	
 		end
 		
 		def add_hook project_id
 			if File.exists? Todone::Consts::HOOK_FILE
-				return "It looks like you're already using your pre-commit hook.\n" +
-					"I was planning on putting something like the following in there:\n" +
-					"todone open_tickets #{project_id} -m"
+				return 'exists_pre_commit_hook'
 			else
 				File.open(Todone::Consts::HOOK_FILE,'w') do |f|
 					f.write("todone open_tickets #{project_id} -m")
 				end
 				FileUtils.chmod 0751, Todone::Consts::HOOK_FILE
-				return "Your pre-commit hook has been updated."
+				return "pre_commit_hook_updated" 
 			end 
 		end
 
@@ -73,7 +68,7 @@ module Todone
 		end
 		
 		def open_tickets
-			return "Error: No project id" if @pp.nil?
+			return "missing_project_id" if @pp.nil?
 			@pp.pull_stories("started")
 		end
 	end
