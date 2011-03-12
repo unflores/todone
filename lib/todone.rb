@@ -69,7 +69,12 @@ module Todone
 		
 		def open_tickets
 			return "missing_project_id" if @pp.nil?
-			@pp.pull_stories("started")
+			api_data = @pp.pull_stories("started")
+			if api_data.class == Hash
+				api_data.delete("error")
+			else
+				"pivotal_stories"
+			end
 		end
 	end
 end

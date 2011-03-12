@@ -62,4 +62,27 @@ describe Todone::MessageProcessor do
 			@mp.add_project(@project).should == 'missing_hooks_dir'
 		end
 	end
+	
+	describe "#open_tickets" do
+
+		it "should return missing_project_id when pivotal puller has not been set" do
+			@mp = Todone::MessageProcessor.new
+			@mp.open_tickets.should == 'missing_project_id'
+		end
+
+		it "should return pivotal_stories when stories are returned" do
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
+			@mp.open_tickets.should == "pivotal_stories"
+		end
+
+		it "should return api_problem when an api error" do
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+			Todone::PivotalPuller.stubs(:get).raises(SocketError)
+			@mp.open_tickets.should == "api_problem"
+		end
+
+		it "should return bad_state when passed a non-existant ticket state"
+
+	end
 end
