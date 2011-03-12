@@ -1,4 +1,5 @@
 require 'httparty' 
+require 'cgi'
 module Todone
 	class PivotalPuller
 		include HTTParty
@@ -10,11 +11,11 @@ module Todone
 		end
 
 		def pull_stories state
-			return "error: invalid state" unless ['started'].include? state
+			return { "error" => "invalid_state" } unless ['started'].include? state
 			filter = CGI.escape("state:#{state}")
 			PivotalPuller.get("/services/v3/projects/#{@project_id}/stories?filter=#{filter}")['stories']
-			rescue
-				return "Error: Could Not connect"
+			rescue 
+				return { "error" => "api_problem" }
 		end		
 	end
 
