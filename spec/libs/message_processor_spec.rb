@@ -85,4 +85,18 @@ describe Todone::MessageProcessor do
 		it "should return bad_state when passed a non-existant ticket state"
 
 	end
+
+	describe "dynamic print methods" do
+		it "should exist if a method exists" do
+			Todone::MessageProcessor.method_defined?('open_tickets').should == true
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+			@mp.print_open_tickets.should == nil 
+		end
+		it "should raise a method_missing error if the method does not exist" do
+		
+			Todone::MessageProcessor.method_defined?('get_me_a_coke').should_not == true
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+	    lambda {@mp.print_get_me_a_coke}.should raise_error NoMethodError
+		end
+	end
 end

@@ -76,5 +76,12 @@ module Todone
 				"pivotal_stories"
 			end
 		end
+
+		def method_missing(method_id, *args)
+			super unless match = /print_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
+				
+			puts self.send(match[1], *args)
+
+		end
 	end
 end
