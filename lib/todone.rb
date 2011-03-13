@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'todone')
 
-%w(cgi pivotal_puller config consts yaml fileutils).each{|requirement| require requirement}
+%w(cgi pivotal_puller config consts views yaml fileutils).each{|requirement| require requirement}
 
 module Todone
 	class MessageProcessor
@@ -8,6 +8,7 @@ module Todone
 		attr_writer :config_dir
 
 		include Todone::Consts
+		include Todone::Views
 
 		class << self
 			def needs_init? dir = Todone::Consts::CONFIG_DIR
@@ -73,15 +74,18 @@ module Todone
 			if api_data.class == Hash
 				api_data.delete("error")
 			else
-				"pivotal_stories"
+				"show_pivotal_stories"
 			end
 		end
 
 		def method_missing(method_id, *args)
 			super unless match = /print_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
-				
-			puts self.send(match[1], *args)
-
+			view, data = self.send(match[1], *args)
+			if Todone::Views.method_defined? view
+				puts self.send(view, data)
+			else
+				puts self.send('missing_view',:method=> match[1])
+			end
 		end
 	end
 end

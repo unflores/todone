@@ -70,10 +70,10 @@ describe Todone::MessageProcessor do
 			@mp.open_tickets.should == 'missing_project_id'
 		end
 
-		it "should return pivotal_stories when stories are returned" do
+		it "should return show_pivotal_stories when stories are returned" do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
-			@mp.open_tickets.should == "pivotal_stories"
+			@mp.open_tickets.should == "show_pivotal_stories"
 		end
 
 		it "should return api_problem when an api error" do
@@ -95,10 +95,18 @@ describe Todone::MessageProcessor do
 		end
 
 		it "should raise a method_missing error if the method does not exist" do
-		
 			Todone::MessageProcessor.method_defined?('get_me_a_coke').should_not == true
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 	    lambda {@mp.print_get_me_a_coke}.should raise_error NoMethodError
 		end
+
+		it "should call the missing template view method when view does not exist" do
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+			Todone::MessageProcessor.method_defined?('open_tickets').should == true
+			@mp.expects(:missing_view)			
+			Todone::Views.stubs(:method_defined?).returns(false)
+			@mp.print_open_tickets 
+		end
+
 	end
 end
