@@ -32,6 +32,15 @@ command :add_project do |cmd|
   end
 end
 
+command :who do |cmd|
+	cmd.syntax = "todone #{cmd.name}"
+	cmd.summary = "display the users who the tickets will be filtered by"
+	cmd.description = "#{cmd.summary}"
+	cmd.when_called do |args, options|
+		#
+	end
+end
+
 command :stats do |cmd|
   cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "get some stats for the tickets you've completed"
