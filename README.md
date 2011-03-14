@@ -12,8 +12,6 @@ Requirements
 Installation & Setup
 --------------------
 
-	$ printf "[commit]\ntemplate = ~/.gitmessage.txt" > ~/.gitconfig
-	$ touch ~/.gitmessage.txt
 	$ gem install todone
 	$ cd git_pj_directory
 	$ todone add_project
@@ -23,15 +21,15 @@ todone add_project
 
 adds a hook for pre-commit that pulls in open stories from pivotal tracker in order to standardize the user's commit messages
 
-todone who
+todone users
 --------
 
 displays who todone will filter by when grabbing information via pivotal
 
-todone day_stats
+todone tickets
 --------------------------
 	  
-grabs all of the tickets/chores/bugs from pivotal tracker that have been completed for the current day.
+grabs all of the tickets/chores/bugs from pivotal tracker that are open or have been modified for the current day.
 
 todone daily_update
 -----------------
