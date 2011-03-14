@@ -10,6 +10,11 @@ describe Todone::PivotalPuller do
 			pp.pull_stories('started').class.to_s.should == 'Array'
 		end
 		
+		it "should return an empty array when a bad project_id is given" do
+			pp = Todone::PivotalPuller.new( 1 )
+			pp.pull_stories('started').class.to_s.should == 'Array'
+		end
+		
 		it "should return an empty array when no stories are available" do
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
 			pp = Todone::PivotalPuller.new( 100000 )

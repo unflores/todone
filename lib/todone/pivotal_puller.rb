@@ -13,7 +13,7 @@ module Todone
 		def pull_stories state
 			return { "error" => "invalid_state" } unless ['started'].include? state
 			filter = CGI.escape("state:#{state}")
-			PivotalPuller.get("/services/v3/projects/#{@project_id}/stories?filter=#{filter}")['stories']
+			PivotalPuller.get("/services/v3/projects/#{@project_id}/stories?filter=#{filter}")['stories'] || []
 			rescue 
 				return { "error" => "api_problem" }
 		end		
