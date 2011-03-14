@@ -36,7 +36,7 @@ command :add_project do |cmd|
   end
 end
 
-command :who do |cmd|
+command :users do |cmd|
 	cmd.syntax = "todone #{cmd.name}"
 	cmd.summary = "display the users who the tickets will be filtered by"
 	cmd.description = "#{cmd.summary}"
@@ -45,9 +45,9 @@ command :who do |cmd|
 	end
 end
 
-command :stats do |cmd|
+command :tickets do |cmd|
   cmd.syntax = "todone #{cmd.name}"
-  cmd.summary = "get some stats for the tickets you've completed"
+  cmd.summary = "All tickets currently open or modified today"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
 		ensure_config_exists!
