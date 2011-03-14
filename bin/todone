@@ -11,6 +11,14 @@ program :version,        File.read(version_file)
 program :help_formatter, Commander::HelpFormatter::TerminalCompact
 default_command :help
 
+def ensure_config_exists!
+	if Todone::MessageProcessor.needs_init?
+		setup = {}
+		setup[:api_key] = ask("API Key: ") {|q| q.echo = true} 
+		setup[:owner]		= ask("Username: "){|q| q.echo = true} 
+		Todone::MessageProcessor.init setup
+	end
+end
 
 command :add_project do |cmd|
   cmd.syntax = "todone #{cmd.name}"
@@ -18,12 +26,8 @@ command :add_project do |cmd|
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
 
-		if Todone::MessageProcessor.needs_init?
-			setup = {}
-			setup[:api_key] = ask("API Key: ") {|q| q.echo = true} 
-			setup[:owner]		= ask("Username: "){|q| q.echo = true} 
-			Todone::MessageProcessor.init setup
-		end
+		ensure_config_exists!
+
 		options = {}
 		options[:id]    = ask("Project id: ") {|q| q.echo = true}
 		options[:users] = ask("Other users: "){|q| q.echo = true} 
@@ -46,16 +50,18 @@ command :stats do |cmd|
   cmd.summary = "get some stats for the tickets you've completed"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
+		ensure_config_exists!
    # 
   end
 end
 
-command :template do |cmd|
+command :daily_update do |cmd|
   cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "print out an email template with"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
-   # 
+		ensure_config_exists!
+	 # 
   end
 end
 
@@ -64,6 +70,7 @@ command :open_tickets do |cmd|
   cmd.summary = "print out a list of open tickets"
   cmd.description = "#{cmd.summary}"
   cmd.when_called do |args, options|
+		ensure_config_exists!
 		mp = Todone::MessageProcessor.new(:project_id => 232039)
 		puts mp.open_tickets 
   end
