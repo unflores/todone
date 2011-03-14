@@ -43,14 +43,14 @@ module Todone
 
 			config[project[:id]] = project[:users].split(',')
 			config.save config_dir
-			return 'missing_hooks_dir' unless File.exists? File.join('.git','hooks')
+			return ['missing_hooks_dir', {:project => project}] unless File.exists? File.join('.git','hooks')
 		
 			return self.add_hook project[:id]	
 		end
 		
 		def add_hook project_id
 			if File.exists? Todone::Consts::HOOK_FILE
-				return 'exists_pre_commit_hook'
+				return ['exists_pre_commit_hook',{:project_id => project_id}]
 			else
 				File.open(Todone::Consts::HOOK_FILE,'w') do |f|
 					f.write("todone open_tickets #{project_id} -m")
@@ -69,12 +69,12 @@ module Todone
 		end
 		
 		def open_tickets
-			return "missing_project_id" if @pp.nil?
+			return ["missing_project_id"] if @pp.nil?
 			api_data = @pp.pull_stories("started")
 			if api_data.class == Hash
 				api_data.delete("error")
 			else
-				"show_pivotal_stories"
+				["show_pivotal_stories", :stories => api_data]
 			end
 		end
 

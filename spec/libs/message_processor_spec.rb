@@ -54,12 +54,14 @@ describe Todone::MessageProcessor do
 		#TODO remove text from return statement
 		it "should not add a hook if .git/hooks/pre-commit is present" do
 			File.stubs(:exists?).returns(true)
-			@mp.add_project(@project).should == "exists_pre_commit_hook"	
+			data = @mp.add_project(@project)
+			data.shift.should == "exists_pre_commit_hook"	
 		end
 		
 		it "should not add a hook if .git/hooks/ cannot be found" do
 			File.stubs(:exists?).returns(false)
-			@mp.add_project(@project).should == 'missing_hooks_dir'
+			data = @mp.add_project(@project)
+			data.shift.should == 'missing_hooks_dir'
 		end
 	end
 	
@@ -67,13 +69,15 @@ describe Todone::MessageProcessor do
 
 		it "should return missing_project_id when pivotal puller has not been set" do
 			@mp = Todone::MessageProcessor.new
-			@mp.open_tickets.should == 'missing_project_id'
+			data = @mp.open_tickets
+			data.shift.should == 'missing_project_id'
 		end
 
 		it "should return show_pivotal_stories when stories are returned" do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
-			@mp.open_tickets.should == "show_pivotal_stories"
+			data = @mp.open_tickets
+			data.shift.should == "show_pivotal_stories"
 		end
 
 		it "should return api_problem when an api error" do
