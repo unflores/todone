@@ -79,12 +79,12 @@ module Todone
 		end
 
 		def method_missing(method_id, *args)
-			super unless match = /print_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
+			super unless match = /view_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
 			view, data = self.send(match[1], *args)
 			if Todone::Views.method_defined? view
-				puts self.send(view, data)
+				self.send(view, data)
 			else
-				puts self.send('missing_view',:method=> match[1])
+				self.send('missing_view',:method=> match[1])
 			end
 		end
 	end

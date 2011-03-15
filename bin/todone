@@ -68,10 +68,14 @@ end
 command :open_tickets do |cmd|
   cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "print out a list of open tickets"
-  cmd.description = "#{cmd.summary}"
+	cmd.description = "#{cmd.summary}"
+	cmd.option "--started", "All tickets currently started"
+	cmd.option "--delivered", "All tickets delivered today"
+	cmd.option "--accepted", "All tickets accepted today"
   cmd.when_called do |args, options|
 		ensure_config_exists!
-		mp = Todone::MessageProcessor.new(:project_id => 232039)
-		puts mp.open_tickets 
+		project_id = options.project_id || 232039
+		mp = Todone::MessageProcessor.new(:project_id => project_id)
+		puts mp.print_open_tickets 
   end
 end
