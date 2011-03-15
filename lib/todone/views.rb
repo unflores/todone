@@ -45,7 +45,11 @@ module Todone
 				pre_commit_msg
 			end
 		end
-
+		
+		def missing_write_file data
+			"The file you are trying to write to '#{data[:file]}' does not exist"
+		end
+		
 		def missing_view data
 			"The method: #{data[:method]} does not currently have a view associated with it."
 		end

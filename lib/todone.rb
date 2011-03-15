@@ -78,14 +78,30 @@ module Todone
 			end
 		end
 
+		def write_open_tickets opts = {} 
+			file = opts[:file] || commit_msg_file
+			if File.exists? file
+				File.open(file, 'w') do |f| 
+					f.write( view_open_tickets  )
+				end
+			else
+				puts missing_write_file( :file => file )
+			end
+		end
+		
+		def commit_msg_file
+			if Dir.getwd.split('/').last == 'hooks' then '../COMMIT_EDITMSG'
+			elsif Dir.exists? '.git'                then '.git/COMMIT_EDITMSG' 
+			end
+		end
+
 		def method_missing(method_id, *args)
 			super unless match = /view_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
-			view, data = self.send(match[1], *args)
-			if Todone::Views.method_defined? view
-				self.send(view, data)
-			else
-				self.send('missing_view',:method=> match[1])
-			end
+			method = match[1]
+			view, data = self.send(method, *args)
+			return self.send('missing_view',:method=> method) unless Todone::Views.method_defined? view
+			
+			self.send(view, data)
 		end
 	end
 end

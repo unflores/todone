@@ -89,19 +89,62 @@ describe Todone::MessageProcessor do
 		it "should return bad_state when passed a non-existant ticket state"
 
 	end
+  describe "#write_open_tickets" do
+		before(:each) do
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+		end
 
-	describe "dynamic print methods" do
+		#TODO: figure out a better way to test this
+		it "should write to a file if there are stories and no file is specified" do
+			Todone::PivotalPuller.stubs(:get).returns({'stories'=> ['thing']})
+			File.expects(:open)
+			@mp.write_open_tickets
+		end
+
+		it "should not write to a file if there are no stories" do
+			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
+			File.expects(:write).never
+			@mp.write_open_tickets
+		end
+
+		it "should call a missing_write_file view if a bad write file is specified" do
+			@mp.expects(:missing_write_file).returns("")	
+			@mp.write_open_tickets :file => 'nonexistant_file_is_nonexistant'
+		end 
+
+	end
+	
+	describe "#commit_msg_file" do
+		
+		before(:each) do
+			@mp = Todone::MessageProcessor.new({:project_id => 5})
+		end
+	
+		it "should return ../COMMIT_EDITMSG if current dir is hooks" do
+			Dir.stubs(:getwd).returns('hooks')
+			@mp.commit_msg_file.should == '../COMMIT_EDITMSG'			
+		end
+
+		it "should return .git/COMMIT_EDITMSG if current dir is base pj dir" do
+			Dir.stubs(:exists?).returns(true)
+			@mp.commit_msg_file.should == '.git/COMMIT_EDITMSG'
+		end
+	
+		it "Not sure what to do if in a different directory than preious 2"
+	end
+	
+	describe "dynamic view methods" do
 
 		it "should exist if a method exists" do
 			Todone::MessageProcessor.method_defined?('open_tickets').should == true
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
-			@mp.print_open_tickets.should == nil 
+			@mp.view_open_tickets.class.should == String
 		end
 
 		it "should raise a method_missing error if the method does not exist" do
 			Todone::MessageProcessor.method_defined?('get_me_a_coke').should_not == true
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
-	    lambda {@mp.print_get_me_a_coke}.should raise_error NoMethodError
+	    lambda {@mp.write_get_me_a_coke}.should raise_error NoMethodError
 		end
 
 		it "should call the missing template view method when view does not exist" do
@@ -109,7 +152,7 @@ describe Todone::MessageProcessor do
 			Todone::MessageProcessor.method_defined?('open_tickets').should == true
 			@mp.expects(:missing_view)			
 			Todone::Views.stubs(:method_defined?).returns(false)
-			@mp.print_open_tickets 
+			@mp.view_open_tickets 
 		end
 
 	end
