@@ -73,16 +73,16 @@ command :open_tickets do |cmd|
 	cmd.option "--started", "All tickets currently started"
 	cmd.option "--delivered", "All tickets delivered today"
 	cmd.option "--accepted", "All tickets accepted today"
-	cmd.option "-w", "Write to file"
+	cmd.option "-w", "--write-file", "Write to file"
 	cmd.option "--file [FILE]", String ,"File to write to.  Default is .git/COMMIT_EDITMSG"
   cmd.when_called do |args, options|
 		ensure_config_exists!
 		project_id = args.shift || 232039
 		mp = Todone::MessageProcessor.new(:project_id => project_id)
-		if options.w.nil?
+		if options.write_file.nil?
 			puts mp.view_open_tickets
 		else
-			mp.write_open_tickets options.file
+			mp.write_open_tickets :file => options.file
 		end
   end
 end
