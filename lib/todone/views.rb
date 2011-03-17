@@ -40,7 +40,7 @@ module Todone
 			pre_commit_msg = "#==================Open Tickets================\n"
 			unless data[:stories].nil?
 				data[:stories].each do |story|
-					pre_commit_msg << "#[ ##{story['id']}] for #{story['name']}\n"
+					pre_commit_msg << "#[#{story['id']}] #{story['name']}\n"
 				end
 				pre_commit_msg
 			end
