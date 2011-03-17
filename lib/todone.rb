@@ -78,11 +78,15 @@ module Todone
 			end
 		end
 
+		 
+		
 		def write_open_tickets opts = {} 
 			file = opts[:file] || commit_msg_file
 			if File.exists? file
-				File.open(file, 'w') do |f| 
-					f.write( view_open_tickets  )
+				File.open(file, 'r+') do |f| 
+					original_message = f.read
+					f.pos = 0
+					f.write( view_open_tickets + original_message  )
 				end
 			else
 				puts missing_write_file( :file => file )
