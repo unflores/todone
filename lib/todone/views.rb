@@ -8,7 +8,7 @@ module Todone
 		def missing_hooks_dir data
 			"Couldn't find the .git dir.\n" +
 			"Go to your project directory and type the following:\n" +
-			"echo 'todone open_tickets #{data[:project][:id]} -m' > .git/hooks/pre-commit\n" +
+			"echo 'todone tickets #{data[:project][:id]} -m' > .git/hooks/pre-commit\n" +
 			"chmod 751 #{Todone::Consts::HOOK_FILE}\n"
 		end
 
@@ -19,7 +19,7 @@ module Todone
 		def exists_pre_commit_hook data
 			"It looks like you're already using your pre-commit hook.\n" +
 			"I was planning on putting something like the following in there:\n" +
-			"todone open_tickets #{data[:project_id]} -m"
+			"todone tickets #{data[:project_id]} -m"
 
 		end
 		

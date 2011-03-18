@@ -65,31 +65,31 @@ describe Todone::MessageProcessor do
 		end
 	end
 	
-	describe "#open_tickets" do
+	describe "#tickets" do
 
 		it "should return missing_project_id when pivotal puller has not been set" do
 			@mp = Todone::MessageProcessor.new
-			data = @mp.open_tickets
+			data = @mp.tickets
 			data.shift.should == 'missing_project_id'
 		end
 
 		it "should return show_pivotal_stories when stories are returned" do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
-			data = @mp.open_tickets
+			data = @mp.tickets
 			data.shift.should == "show_pivotal_stories"
 		end
 
 		it "should return api_problem when an api error" do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 			Todone::PivotalPuller.stubs(:get).raises(SocketError)
-			@mp.open_tickets.should == "api_problem"
+			@mp.tickets.should == "api_problem"
 		end
 
 		it "should return bad_state when passed a non-existant ticket state"
 
 	end
-  describe "#write_open_tickets" do
+  describe "#write_tickets" do
 		before(:each) do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
 		end
@@ -98,18 +98,18 @@ describe Todone::MessageProcessor do
 		it "should write to a file if there are stories and no file is specified" do
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> ['thing']})
 			File.expects(:open)
-			@mp.write_open_tickets
+			@mp.write_tickets
 		end
 
 		it "should not write to a file if there are no stories" do
 			Todone::PivotalPuller.stubs(:get).returns({'stories'=> []})
 			File.expects(:write).never
-			@mp.write_open_tickets
+			@mp.write_tickets
 		end
 
 		it "should call a missing_write_file view if a bad write file is specified" do
 			@mp.expects(:missing_write_file).returns("")	
-			@mp.write_open_tickets :file => 'nonexistant_file_is_nonexistant'
+			@mp.write_tickets :file => 'nonexistant_file_is_nonexistant'
 		end 
 
 	end
@@ -136,9 +136,9 @@ describe Todone::MessageProcessor do
 	describe "dynamic view methods" do
 
 		it "should exist if a method exists" do
-			Todone::MessageProcessor.method_defined?('open_tickets').should == true
+			Todone::MessageProcessor.method_defined?('tickets').should == true
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
-			@mp.view_open_tickets.class.should == String
+			@mp.view_tickets.class.should == String
 		end
 
 		it "should raise a method_missing error if the method does not exist" do
@@ -149,10 +149,10 @@ describe Todone::MessageProcessor do
 
 		it "should call the missing template view method when view does not exist" do
 			@mp = Todone::MessageProcessor.new({:project_id => 5})
-			Todone::MessageProcessor.method_defined?('open_tickets').should == true
+			Todone::MessageProcessor.method_defined?('tickets').should == true
 			@mp.expects(:missing_view)			
 			Todone::Views.stubs(:method_defined?).returns(false)
-			@mp.view_open_tickets 
+			@mp.view_tickets 
 		end
 
 	end

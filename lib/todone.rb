@@ -53,7 +53,7 @@ module Todone
 				return ['exists_pre_commit_hook',{:project_id => project_id}]
 			else
 				File.open(Todone::Consts::HOOK_FILE,'w') do |f|
-					f.write("todone open_tickets #{project_id} -m")
+					f.write("todone tickets #{project_id} -m")
 				end
 				FileUtils.chmod 0751, Todone::Consts::HOOK_FILE
 				return "pre_commit_hook_updated" 
@@ -68,7 +68,7 @@ module Todone
 			(@config_dir.nil? && Todone::Consts::CONFIG_DIR) || @config_dir
 		end
 		
-		def open_tickets
+		def tickets
 			return ["missing_project_id"] if @pp.nil?
 			api_data = @pp.pull_stories("started")
 			if api_data.class == Hash
@@ -80,13 +80,13 @@ module Todone
 
 		 
 		
-		def write_open_tickets opts = {} 
+		def write_tickets opts = {} 
 			file = opts[:file] || commit_msg_file
 			if File.exists? file
 				File.open(file, 'r+') do |f| 
 					original_message = f.read
 					f.pos = 0
-					f.write( view_open_tickets + original_message  )
+					f.write( view_tickets + original_message  )
 				end
 			else
 				puts missing_write_file( :file => file )

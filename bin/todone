@@ -45,16 +45,6 @@ command :users do |cmd|
 	end
 end
 
-command :tickets do |cmd|
-  cmd.syntax = "todone #{cmd.name}"
-  cmd.summary = "All tickets currently open or modified today"
-  cmd.description = "#{cmd.summary}"
-  cmd.when_called do |args, options|
-		ensure_config_exists!
-   # 
-  end
-end
-
 command :daily_update do |cmd|
   cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "print out an email template with"
@@ -65,7 +55,7 @@ command :daily_update do |cmd|
   end
 end
 
-command :open_tickets do |cmd|
+command :tickets do |cmd|
   cmd.syntax = "todone #{cmd.name}"
   cmd.summary = "print out a list of open tickets"
 	cmd.description = "#{cmd.summary}"
@@ -80,9 +70,9 @@ command :open_tickets do |cmd|
 		project_id = args.shift
 		mp = Todone::MessageProcessor.new(:project_id => project_id)
 		if options.write_file.nil?
-			puts mp.view_open_tickets
+			puts mp.view_tickets
 		else
-			mp.write_open_tickets :file => options.file
+			mp.write_tickets :file => options.file
 		end
   end
 end
