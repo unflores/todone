@@ -67,7 +67,8 @@ describe Todone::MessageProcessor do
 	
 	describe "#tickets" do
 
-		it "should return missing_project_id when pivotal puller has not been set" do
+		it "should return show_pivotal_stories when project_id not passed to construct but exists in git config" do
+			Todone::MessageProcessor.stubs(:load_project_id).returns(nil)	
 			@mp = Todone::MessageProcessor.new
 			data = @mp.tickets
 			data.shift.should == 'missing_project_id'
@@ -122,12 +123,12 @@ describe Todone::MessageProcessor do
 	
 		it "should return ../COMMIT_EDITMSG if current dir is hooks" do
 			Dir.stubs(:getwd).returns('hooks')
-			@mp.commit_msg_file.should == '../COMMIT_EDITMSG'			
+			Todone::MessageProcessor.commit_msg_file.should == '../COMMIT_EDITMSG'			
 		end
 
 		it "should return .git/COMMIT_EDITMSG if current dir is base pj dir" do
 			Dir.stubs(:exists?).returns(true)
-			@mp.commit_msg_file.should == '.git/COMMIT_EDITMSG'
+			Todone::MessageProcessor.commit_msg_file.should == '.git/COMMIT_EDITMSG'
 		end
 	
 		it "Not sure what to do if in a different directory than preious 2"

@@ -6,7 +6,6 @@ module Todone
 	class MessageProcessor
 		attr :config
 		attr_writer :config_dir
-
 		include Todone::Consts
 		include Todone::Views
 
@@ -31,16 +30,40 @@ module Todone
 				end
 
 			end
+			
+			def load_project_id
+				File.open(Todone::MessageProcessor.git_config) do |file| 
+					file.each_line do |line| 
+						if line.slice('[pivotal]')
+							return file.gets.tr("\s\t\n",'').split('=').last
+						end
+					end
+				end
+			end
+				
+			def commit_msg_file
+				File.join(git_dir,'COMMIT_EDITMSG')
+			end
+
+			def git_dir
+				if Dir.getwd.split('/').last == 'hooks' then '..'
+				elsif Dir.exists? '.git' then '.git'
+				end
+			end
+			
+			def git_config; File.join(git_dir,'config') end
+
 		end
  
 		def initialize opts = {}
 			self.config_dir = opts[:config_dir]
-			@pp = Todone::PivotalPuller.new(opts[:project_id]) if opts[:project_id]
+			@project_id = opts[:project_id] || Todone::MessageProcessor.load_project_id
+			@pp = Todone::PivotalPuller.new(project_id) if @project_id
 		end
 
 		def add_project project
 			return 'missing_project' if project.nil? or project[:id].nil? or project[:users].nil?
-
+			save_project_id project[:id]
 			config[project[:id]] = project[:users].split(',')
 			config.save config_dir
 			return ['missing_hooks_dir', {:project => project}] unless File.exists? File.join('.git','hooks')
@@ -60,6 +83,11 @@ module Todone
 			end 
 		end
 
+		def save_project_id project_id
+			`git config -f .git/config pivotal.project-id #{project_id}`
+		end
+		
+
 		def config
 			@config ||= Todone::Config.load_config self.config_dir
 		end
@@ -77,11 +105,9 @@ module Todone
 				["show_pivotal_stories", :stories => api_data]
 			end
 		end
-
-		 
 		
 		def write_tickets opts = {} 
-			file = opts[:file] || commit_msg_file
+			file = opts[:file] || Todone::MessageProcessor.commit_msg_file
 			if File.exists? file
 				File.open(file, 'r+') do |f| 
 					original_message = f.read
@@ -93,11 +119,6 @@ module Todone
 			end
 		end
 		
-		def commit_msg_file
-			if Dir.getwd.split('/').last == 'hooks' then '../COMMIT_EDITMSG'
-			elsif Dir.exists? '.git'                then '.git/COMMIT_EDITMSG' 
-			end
-		end
 
 		def method_missing(method_id, *args)
 			super unless match = /view_(.*)/.match(method_id.to_s) and Todone::MessageProcessor.method_defined?(match[1])
