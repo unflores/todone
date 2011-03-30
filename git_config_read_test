@@ -1,0 +1,12 @@
+project_string = ''
+found = nil
+File.open('.git/config') do |file| 
+	file.each_line do |line| 
+		found ||= line.slice('[pivotal]')
+		project_string = line.tr(" \t\n",'') unless found.nil? or (line.slice('[pivotal]') and found)
+	end
+end
+
+return nil if project_string.blank?
+
+project_string.split('=').last
