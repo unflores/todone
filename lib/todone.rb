@@ -57,8 +57,8 @@ module Todone
  
 		def initialize opts = {}
 			self.config_dir = opts[:config_dir]
-			@project_id = opts[:project_id] || Todone::MessageProcessor.load_project_id
-			@pp = Todone::PivotalPuller.new(project_id) if @project_id
+			project_id = opts[:project_id] || Todone::MessageProcessor.load_project_id
+			@pp = Todone::PivotalPuller.new(project_id) if project_id
 		end
 
 		def add_project project
