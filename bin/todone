@@ -56,13 +56,12 @@ command :daily_update do |cmd|
 end
 
 command :tickets do |cmd|
-  cmd.syntax = "todone #{cmd.name}"
+  cmd.syntax = "todone #{cmd.name} [options]"
   cmd.summary = "print out a list of open tickets"
 	cmd.description = "#{cmd.summary}"
-	
-	cmd.option "--started", "All tickets currently started"
-	cmd.option "--delivered", "All tickets delivered today"
-	cmd.option "--accepted", "All tickets accepted today"
+	cmd.option "-s","--started", "All tickets currently started"
+	cmd.option "-d","--delivered", "All tickets delivered today"
+	cmd.option "-a","--accepted", "All tickets accepted today"
 	cmd.option "-w", "--write-file", "Write to file"
 	cmd.option "--file [FILE]", String ,"File to write to.  Default is .git/COMMIT_EDITMSG"
   cmd.when_called do |args, options|
