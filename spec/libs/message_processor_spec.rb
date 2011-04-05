@@ -32,6 +32,7 @@ describe Todone::MessageProcessor do
 		before(:each) do
 			FSHelp::ensure_fresh_config! 
 			@mp = Todone::MessageProcessor.new(:config_dir => FSHelp::CONFIG_DIR)
+			@mp.stubs(:save_project_id).returns(nil);
 			@project = { :users => 'frank_drebbin', :id => '555555' }
 		end
 		
