@@ -4,10 +4,11 @@ module Todone
 	class PivotalPuller
 		include HTTParty
 		base_uri 'www.pivotaltracker.com'
-		headers 'X-TrackerToken' => 'fcce1b9f7291fded1bcea2fb9a19bd96'
 		
-		def initialize project_id
-			@project_id = project_id
+		
+		def initialize opts 
+			@project_id = opts[:project_id]
+			Todone::PivotalPuller.headers 'X-TrackerToken' => opts[:tracker_token]
 		end
 
 		def pull_stories state
