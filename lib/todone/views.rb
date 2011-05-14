@@ -53,5 +53,9 @@ module Todone
 		def missing_view data
 			"The method: #{data[:method]} does not currently have a view associated with it."
 		end
+
+		def api_problem data
+			"There was a problem connecting to the PivotalTracker API." 
+		end
 	end
 end
