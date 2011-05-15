@@ -34,11 +34,10 @@ module Todone
 			def load_project_id
 				File.open(Todone::MessageProcessor.git_config) do |file| 
 					file.each_line do |line| 
-						if line.slice('[pivotal]')
-							return file.gets.tr("\s\t\n",'').split('=').last
-						end
+						return file.gets.tr("\s\t\n",'').split('=').last if line.slice('[pivotal]')
 					end
 				end
+				return nil
 			end
 				
 			def commit_msg_file
@@ -47,7 +46,7 @@ module Todone
 
 			def git_dir
 				if Dir.getwd.split('/').last == 'hooks' then '..'
-				elsif Dir.exists? '.git' then '.git'
+				elsif Dir.exists? '.git'                then '.git'
 				end
 			end
 			

@@ -65,6 +65,14 @@ describe Todone::MessageProcessor do
 			data.shift.should == 'missing_hooks_dir'
 		end
 	end
+
+	describe "#load_project_id" do
+		it "should return the project_id if one exists in .git/config	file" do
+		end
+		it "should return nil when a project_id does not exist in the .git/config file" do
+			
+		end
+	end
 	
 	describe "#tickets" do
 
