@@ -71,7 +71,7 @@ command :tickets do |cmd|
 		if options.write_file.nil?
 			puts mp.view_tickets
 		else
-			mp.write_tickets :file => options.file
+			mp.write_tickets 
 		end
   end
 end
