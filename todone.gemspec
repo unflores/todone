@@ -37,7 +37,8 @@ Gem::Specification.new do |s|
     "spec/helper.rb",
     "spec/libs/config_spec.rb",
     "spec/libs/message_processor_spec.rb",
-    "spec/libs/pivotal_puller_spec.rb"
+    "spec/libs/pivotal_puller_spec.rb",
+    "todone.gemspec"
   ]
   s.homepage = %q{http://github.com/unflores/todone}
   s.licenses = ["MIT"]
