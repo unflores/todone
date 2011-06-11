@@ -14,3 +14,4 @@ pkg
 .DS_Store
 # For vim:
 *.swp
+.redcar/*
