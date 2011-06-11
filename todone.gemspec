@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["A Flores"]
-  s.date = %q{2011-05-23}
+  s.date = %q{2011-06-11}
   s.default_executable = %q{todone}
   s.description = %q{Toone is a command-line tool that gives you the ability to better integrate git with your project manager(which is currently only allowed to be pivotal tracker). Todone will keep track of the tickets your working on so you don't have to.}
   s.email = %q{ctrl4ltdeleteme@gmail.com}
