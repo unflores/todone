@@ -46,7 +46,7 @@ module Todone
 
 			def git_dir
 				if Dir.getwd.split('/').last == 'hooks' then '..'
-				elsif Dir.exists? '.git'                then '.git'
+				elsif File.exists? '.git'               then '.git'
 				end
 			end
 			
