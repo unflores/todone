@@ -101,7 +101,7 @@ module Todone
 			if api_data.class == Hash
 				api_data.delete("error")
 			else
-				["show_pivotal_stories", :stories => api_data]
+				["show_pivotal_stories", { :stories => api_data } ]
 			end
 		end
 		
