@@ -37,7 +37,7 @@ module Todone
 			last_commit_msg << last_commit.collect{|line| "##{line}"}.join("\n")+"\n"
 		end
 =end
-			prepare_commit_msg = "#==================Open Tickets================\n"
+			prepare_commit_msg = "\n#==================Open Tickets================\n"
 			unless data[:stories].nil?
 				data[:stories].each do |story|
 					prepare_commit_msg << "#[#{story['id']}] #{story['name']}\n"
