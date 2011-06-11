@@ -72,13 +72,13 @@ module Todone
 		
 		def add_hook project_id
 			if File.exists? Todone::Consts::HOOK_FILE
-				return ['exists_pre_commit_hook',{:project_id => project_id}]
+				return ['exists_prepare_commit_msg_hook',{:project_id => project_id}]
 			else
 				File.open(Todone::Consts::HOOK_FILE,'w') do |f|
 					f.write("todone tickets #{project_id} -m")
 				end
 				FileUtils.chmod 0751, Todone::Consts::HOOK_FILE
-				return "pre_commit_hook_updated" 
+				return "prepare_commit_msg_hook_updated" 
 			end 
 		end
 

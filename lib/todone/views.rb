@@ -16,14 +16,14 @@ module Todone
 			"Error: No project id"
 		end
 
-		def exists_pre_commit_hook data
+		def exists_prepare_commit_msg_hook data
 			"It looks like you're already using your pre-commit hook.\n" +
 			"I was planning on putting something like the following in there:\n" +
 			"todone tickets #{data[:project_id]} -m"
 
 		end
 		
-		def updated_pre_commit_hook
+		def updated_prepare_commit_msg_hook
 			"Your pre-commit hook has been updated."	
 		end
 		
@@ -37,12 +37,12 @@ module Todone
 			last_commit_msg << last_commit.collect{|line| "##{line}"}.join("\n")+"\n"
 		end
 =end
-			pre_commit_msg = "#==================Open Tickets================\n"
+			prepare_commit_msg = "#==================Open Tickets================\n"
 			unless data[:stories].nil?
 				data[:stories].each do |story|
-					pre_commit_msg << "#[#{story['id']}] #{story['name']}\n"
+					prepare_commit_msg << "#[#{story['id']}] #{story['name']}\n"
 				end
-				pre_commit_msg
+				prepare_commit_msg
 			end
 		end
 		

@@ -56,7 +56,7 @@ describe Todone::MessageProcessor do
 		it "should not add a hook if .git/hooks/pre-commit is present" do
 			File.stubs(:exists?).returns(true)
 			data = @mp.add_project(@project)
-			data.shift.should == "exists_pre_commit_hook"	
+			data.shift.should == "exists_prepare_commit_msg_hook"
 		end
 		
 		it "should not add a hook if .git/hooks/ cannot be found" do
