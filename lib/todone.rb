@@ -75,7 +75,7 @@ module Todone
 				return ['exists_prepare_commit_msg_hook',{:project_id => project_id}]
 			else
 				File.open(Todone::Consts::HOOK_FILE,'w') do |f|
-					f.write("todone tickets #{project_id} -m")
+					f.write("todone tickets -s -w")
 				end
 				FileUtils.chmod 0751, Todone::Consts::HOOK_FILE
 				return "prepare_commit_msg_hook_updated" 
